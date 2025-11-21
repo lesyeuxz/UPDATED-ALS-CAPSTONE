@@ -662,20 +662,24 @@ function StudentActivitySummaryPageContent() {
               className="w-full"
             >
               <div className="border-b border-gray-300 dark:border-gray-600">
-                {/* Responsive, wrapping tabs */}
+                {/* Responsive, wrapping module cards */}
                 <div className="px-1">
-                  <TabsList className="w-full !bg-transparent rounded-none gap-2 p-0 justify-start flex flex-wrap">
+                  <TabsList className="w-full !bg-transparent !h-auto rounded-none p-0 flex flex-wrap gap-3 justify-start items-stretch">
                     {availableModules.map((module) => (
                       <TabsTrigger
                         key={module._id}
                         value={module._id}
-                        className={`px-3 sm:px-4 md:px-6 py-3 border-b-2 transition-colors font-bold whitespace-normal break-words text-left text-xs sm:text-sm md:text-base max-w-full sm:max-w-[48%] md:max-w-none ${
-                          selectedModule === module._id
-                            ? "!bg-blue-600 dark:!bg-blue-700 !text-white border-blue-600 dark:border-blue-500 rounded-t-lg data-[state=active]:!bg-blue-600 dark:data-[state=active]:!bg-blue-700 data-[state=active]:!text-white"
-                            : "!bg-transparent !text-gray-700 dark:!text-gray-300 hover:!text-blue-600 dark:hover:!text-blue-400 border-transparent hover:border-blue-200 dark:hover:border-blue-400 rounded-none data-[state=active]:!bg-transparent"
-                        }`}
+                        className={`flex flex-col items-start justify-between text-left font-semibold whitespace-normal break-words
+                          min-w-[180px] sm:min-w-[200px] md:min-w-[220px] max-w-full
+                          px-3 sm:px-4 py-3 rounded-lg border shadow-sm text-xs sm:text-sm md:text-base
+                          transition-all duration-200
+                          ${
+                            selectedModule === module._id
+                              ? "!bg-blue-600 dark:!bg-blue-700 !text-white border-blue-600 dark:border-blue-500 shadow-md scale-[1.01]"
+                              : "bg-white dark:bg-slate-800 !text-gray-800 dark:!text-gray-100 border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-blue-400"
+                          }`}
                       >
-                        <span className="block leading-snug sm:leading-normal truncate sm:whitespace-normal sm:line-clamp-2">
+                        <span className="block leading-snug sm:leading-normal break-words line-clamp-2">
                           {module.title}
                         </span>
                       </TabsTrigger>
