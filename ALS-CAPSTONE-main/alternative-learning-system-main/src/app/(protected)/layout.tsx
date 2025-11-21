@@ -39,6 +39,40 @@ export default function ProtectedLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Handle window resize to auto-close mobile menu on larger screens and adjust sidebar
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      
+      // Auto-close mobile menu on larger screens
+      if (width >= 1024) {
+        setIsMobileMenuOpen(false);
+      }
+      
+      // Auto-collapse sidebar on very small screens
+      if (width < 640) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    // Initial check
+    handleResize();
+
+    // Add debounced resize listener
+    let timeoutId: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(handleResize, 150);
+    };
+
+    window.addEventListener('resize', debouncedResize);
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   // Get auth store state and actions
   const user = useAuthStore(state => state.auth.user);
@@ -71,12 +105,22 @@ export default function ProtectedLayout({
 
   return (
     <ProtectedRoute>
-      <div className="flex h-screen bg-theme-background">
+      <div className="flex h-screen bg-theme-background overflow-hidden">
+        {/* Mobile Overlay */}
+        {isMobileMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+        )}
+
         {/* Sidebar */}
         <div
           className={`bg-blue-900 dark:bg-slate-800 text-white ${
             isSidebarOpen ? 'w-64' : 'w-20'
-          } transition-all duration-300 ease-in-out flex flex-col shadow-2xl relative`}
+          } transition-all duration-300 ease-in-out flex flex-col shadow-2xl relative z-50
+          fixed lg:static h-full
+          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
         >
           {/* Sidebar header with white background and rounded bottom */}
           <div className="bg-white dark:bg-slate-700 text-blue-900 dark:text-white rounded-b-2xl mb-6 shadow-lg relative">
@@ -196,6 +240,10 @@ export default function ProtectedLayout({
                     title={!isSidebarOpen ? item.name : undefined}
                     onClick={() => {
                       console.log('Navigation clicked:', item.name, item.href);
+                      // Close mobile menu on navigation
+                      if (window.innerWidth < 1024) {
+                        setIsMobileMenuOpen(false);
+                      }
                     }}
                   >
                     <div className={`flex items-center justify-center ${isSidebarOpen ? '' : 'w-full'}`}>
@@ -252,9 +300,26 @@ export default function ProtectedLayout({
         </div>
 
         {/* Main content */}
-        <div className="flex-1 overflow-auto">
-          <header className="bg-white dark:bg-slate-800 shadow-sm">
+        <div className="flex-1 overflow-auto lg:ml-0">
+          <header className="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-30">
             <div className="px-4 py-4 sm:px-6 lg:px-8">
+              {/* Mobile Menu Button */}
+              <div className="lg:hidden mb-3">
+                <button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg p-2 transition-colors"
+                  aria-label="Toggle menu"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {isMobileMenuOpen ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    )}
+                  </svg>
+                </button>
+              </div>
+
               {/* Desktop Layout */}
               <div className="hidden md:flex justify-between items-center">
                 <h1 className="text-lg font-bold text-gray-800 dark:text-white uppercase">
@@ -281,21 +346,21 @@ export default function ProtectedLayout({
               </div>
 
               {/* Mobile Layout */}
-              <div className="md:hidden space-y-3">
-                <div className="flex justify-between items-center">
-                  <h1 className="text-lg font-bold text-gray-800 dark:text-white uppercase">
+              <div className="md:hidden space-y-2 sm:space-y-3">
+                <div className="flex justify-between items-center gap-2">
+                  <h1 className="text-base sm:text-lg font-bold text-gray-800 dark:text-white uppercase truncate flex-1">
                     {navItems.find(item => item.href === pathname)?.name || 'Dashboard'}
                   </h1>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                     {/* Accessibility Controls */}
                     <AccessibilityControls variant="header" />
 
                     {/* User Info - Only show on dashboard */}
                     {pathname === '/dashboard' && (
                       <div className="flex items-center">
-                        <span className="mr-2 text-sm font-medium text-gray-800 dark:text-white">Hello!, {user?.name || 'Staff Name'}</span>
-                        <div className="h-8 w-8 rounded-full bg-gray-300 dark:bg-slate-600 flex items-center justify-center text-gray-600 dark:text-white">
+                        <span className="hidden sm:inline mr-2 text-xs sm:text-sm font-medium text-gray-800 dark:text-white truncate max-w-[100px]">Hello!, {user?.name || 'Staff Name'}</span>
+                        <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-gray-300 dark:bg-slate-600 flex items-center justify-center text-gray-600 dark:text-white">
                           <span className="text-xs">👤</span>
                         </div>
                       </div>
@@ -309,7 +374,7 @@ export default function ProtectedLayout({
             </div>
           </header>
 
-          <main className="p-6 bg-theme-background">
+          <main className="p-3 sm:p-4 md:p-6 bg-theme-background min-h-[calc(100vh-80px)]">
             {children}
           </main>
         </div>

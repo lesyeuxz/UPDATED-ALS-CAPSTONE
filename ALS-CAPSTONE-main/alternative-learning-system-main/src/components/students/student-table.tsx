@@ -58,8 +58,9 @@ export function StudentTable({ students, barangays, onEdit, onDelete, onRowClick
   });
 
   return (
-    <div className="rounded-md border border-gray-200 dark:border-gray-600">
-      <Table>
+    <div className="rounded-md border border-gray-200 dark:border-gray-600 overflow-x-auto">
+      <div className="min-w-full inline-block align-middle">
+        <Table className="min-w-[800px]">
         <TableHeader className="bg-blue-600 dark:bg-blue-700">
           <TableRow>
             <TableHead
@@ -170,6 +171,7 @@ export function StudentTable({ students, barangays, onEdit, onDelete, onRowClick
           )}
         </TableBody>
       </Table>
+      </div>
     </div>
   );
 }

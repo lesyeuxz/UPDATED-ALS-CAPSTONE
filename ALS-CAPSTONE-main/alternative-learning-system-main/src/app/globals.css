@@ -130,6 +130,18 @@
   button:disabled {
     cursor: not-allowed;
   }
+
+  /* Responsive base styles */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  /* Prevent horizontal scroll on small screens */
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
 }
 
 /* React Big Calendar Custom Styles */
@@ -244,16 +256,18 @@
 
 /* Dashboard Viewport Management */
 .dashboard-container {
-  height: calc(100vh - 64px); /* Full viewport minus header */
+  min-height: calc(100vh - 80px); /* Full viewport minus header */
+  height: auto;
 }
 
 .dashboard-main {
-  height: calc(100% - 48px); /* Full container minus padding */
+  min-height: calc(100% - 48px); /* Full container minus padding */
+  height: auto;
 }
 
 .dashboard-grid {
-  height: calc(100% - 120px); /* Full main minus welcome section */
-  min-height: 500px; /* Further reduced from 600px for even more compact view */
+  min-height: 400px; /* Minimum height for grid */
+  height: auto; /* Allow content to expand */
 }
 
 /* Ensure proper scrolling in containers */
@@ -300,24 +314,25 @@
 /* Mobile responsive adjustments */
 @media (max-width: 1023px) {
   .dashboard-container {
+    min-height: calc(100vh - 100px);
     height: auto;
-    min-height: 100vh;
   }
 
   .dashboard-main {
+    min-height: calc(100vh - 100px);
     height: auto;
-    min-height: calc(100vh - 64px);
   }
 
   .dashboard-grid {
+    min-height: 300px;
     height: auto;
-    min-height: calc(100vh - 200px);
     gap: 1rem; /* Reduced gap on mobile */
   }
 
   /* Mobile container adjustments */
   .dashboard-grid > div {
-    min-height: 300px !important; /* Further reduced from 350px for more compact mobile view */
+    min-height: 250px !important; /* Reduced for more compact mobile view */
+    height: auto !important;
   }
 }
 
@@ -360,27 +375,45 @@
 
 /* Specific height constraints for dashboard components */
 .events-container {
-  height: 100% !important;
-  max-height: 100% !important;
+  min-height: 300px !important;
+  height: auto !important;
+  max-height: 600px !important;
   overflow: hidden !important;
 }
 
 .events-content {
-  height: 100% !important;
-  max-height: 100% !important;
+  min-height: 200px !important;
+  height: auto !important;
+  max-height: 500px !important;
   overflow-y: auto !important;
 }
 
 .calendar-container {
-  height: 100% !important;
-  max-height: 100% !important;
+  min-height: 300px !important;
+  height: auto !important;
+  max-height: 600px !important;
   overflow: hidden !important;
 }
 
 .vision-mission-container {
-  height: 100% !important;
-  max-height: 100% !important;
+  min-height: 300px !important;
+  height: auto !important;
+  max-height: 600px !important;
   overflow: hidden !important;
+}
+
+@media (max-width: 768px) {
+  .events-container,
+  .calendar-container,
+  .vision-mission-container {
+    min-height: 250px !important;
+    max-height: 400px !important;
+  }
+  
+  .events-content {
+    min-height: 150px !important;
+    max-height: 350px !important;
+  }
 }
 
 /* Fix rounded corners alignment */
@@ -403,8 +436,9 @@
 
 /* Dashboard grid item constraints */
 .dashboard-grid > div {
-  height: 100% !important;
-  max-height: 100% !important;
+  height: auto !important;
+  min-height: 300px !important;
+  max-height: none !important;
   overflow: hidden !important;
 }
 
@@ -413,29 +447,57 @@
 .dashboard-grid .calendar-container,
 .dashboard-grid .vision-mission-container {
   flex-shrink: 0 !important;
-  flex-grow: 0 !important;
+  flex-grow: 1 !important;
   flex-basis: auto !important;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 640px) {
+  .dashboard-grid > div {
+    min-height: 250px !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .dashboard-grid > div {
+    min-height: 300px !important;
+  }
 }
 
 /* Ensure events list doesn't expand parent */
 .events-content {
-  contain: layout style size !important;
+  contain: layout style !important;
+  max-height: 500px !important;
+  overflow-y: auto !important;
+}
+
+@media (max-width: 768px) {
+  .events-content {
+    max-height: 350px !important;
+  }
 }
 
 /* Prevent layout shifts during async loading */
 .dashboard-grid > div {
-  min-height: 380px !important; /* Further reduced from 450px for more compact view */
+  min-height: 300px !important; /* Responsive minimum height */
+  height: auto !important;
+}
+
+@media (min-width: 640px) {
+  .dashboard-grid > div {
+    min-height: 350px !important;
+  }
 }
 
 @media (min-width: 1024px) {
   .dashboard-grid > div {
-    min-height: 450px !important; /* Further reduced from 520px */
+    min-height: 400px !important;
   }
 }
 
 @media (min-width: 1280px) {
   .dashboard-grid > div {
-    min-height: 480px !important; /* Further reduced from 580px for more compact view */
+    min-height: 450px !important;
   }
 }
 
@@ -556,6 +618,47 @@
   transition: all 0.2s ease-in-out;
 }
 
+/* Global responsive improvements */
+@media (max-width: 640px) {
+  /* Reduce padding on very small screens */
+  .p-6 {
+    padding: 1rem !important;
+  }
+
+  .p-4 {
+    padding: 0.75rem !important;
+  }
+
+  /* Improve text readability on small screens */
+  .text-2xl {
+    font-size: 1.5rem !important;
+  }
+
+  .text-xl {
+    font-size: 1.25rem !important;
+  }
+
+  .text-lg {
+    font-size: 1.125rem !important;
+  }
+}
+
+/* Table responsive improvements */
+@media (max-width: 768px) {
+  /* Ensure tables are scrollable */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  /* Improve table cell padding on mobile */
+  table th,
+  table td {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem !important;
+  }
+}
+
 /* Mobile responsive tabs styling */
 .scrollbar-thin {
   scrollbar-width: thin;
@@ -615,6 +718,19 @@
   .overflow-x-auto::-webkit-scrollbar-thumb {
     background: rgba(156, 163, 175, 0.5);
     border-radius: 3px;
+  }
+
+  /* Improve button sizes on mobile */
+  button {
+    min-height: 44px; /* Better touch target */
+    min-width: 44px;
+  }
+
+  /* Improve input fields on mobile */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevents zoom on iOS */
   }
 }
 

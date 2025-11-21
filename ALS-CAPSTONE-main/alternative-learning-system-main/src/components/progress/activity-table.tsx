@@ -205,8 +205,9 @@ export function ActivityTable({
       </div>
 
       {/* Activity Table - Always show headers */}
-      <div className="overflow-x-auto">
-        <Table className="border-4 border-blue-600 dark:border-blue-500">
+      <div className="overflow-x-auto rounded-md border-4 border-blue-600 dark:border-blue-500">
+        <div className="min-w-full inline-block align-middle">
+          <Table className="min-w-[700px]">
           <TableHeader>
             <TableRow className="bg-blue-600 dark:bg-blue-700 hover:bg-blue-600 dark:hover:bg-blue-700">
               <TableHead className="text-white font-bold text-left border-r-2 border-blue-500 dark:border-blue-400 px-4 py-3">
@@ -289,6 +290,7 @@ export function ActivityTable({
             )}
           </TableBody>
         </Table>
+        </div>
       </div>
 
       {/* Summary Statistics */}

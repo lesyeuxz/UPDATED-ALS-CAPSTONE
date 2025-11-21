@@ -120,17 +120,17 @@ export default function DashboardPage() {
   return (
     <div className="dashboard-container space-y-4 sm:space-y-6 pb-8">
       {/* Welcome Header */}
-      <div className="text-center px-2 sm:px-0">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+      <div className="text-center px-2 sm:px-0 mb-4 sm:mb-6">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
           Welcome to Alternative Learning System!
         </h1>
-        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+        <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300">
           Hello, {user?.name || 'Staff Name'}! Manage your ALS programs and track student progress.
         </p>
       </div>
 
       {/* Main Dashboard Layout - Responsive Grid */}
-      <div className="dashboard-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="dashboard-grid grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
         {/* Calendar - Full width on mobile, half on tablet, third on desktop */}
         <div className="md:col-span-1 lg:col-span-1">
           <SchoolCalendar />
@@ -147,10 +147,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Map Section */}
-      <div className="space-y-4 mt-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Map View</h2>
+        {/* Map Section */}
+      <div className="space-y-3 sm:space-y-4 mt-4 sm:mt-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Map View</h2>
         </div>
 
         {/* Barangay Tabs */}
@@ -165,10 +165,10 @@ export default function DashboardPage() {
         )}
 
         {/* Interactive Map */}
-        <div className="bg-white rounded-lg shadow-lg border-4 border-blue-600">
+        <div className="bg-white rounded-lg shadow-lg border-2 sm:border-4 border-blue-600">
           <div className="p-1">
             {loadingBarangays || isInitialLoading || !isMounted ? (
-              <MapSkeleton className="h-[400px]" />
+              <MapSkeleton className="h-[300px] sm:h-[400px]" />
             ) : (
               <MapErrorBoundary key={`error-boundary-${mapKey}`}>
                 <div className="map-wrapper" key={`wrapper-${mapKey}`}>
@@ -177,7 +177,7 @@ export default function DashboardPage() {
                     barangays={filteredBarangays}
                     selectedBarangay={selectedBarangay}
                     enrollmentStats={enrollmentStats}
-                    className="h-[400px]"
+                    className="h-[300px] sm:h-[400px]"
                   />
                 </div>
               </MapErrorBoundary>
@@ -186,9 +186,9 @@ export default function DashboardPage() {
         </div>
 
         {/* Map Legend/Info */}
-        <div className="bg-white rounded-lg shadow-lg border-4 border-blue-600 p-6">
-          <h3 className="text-lg font-bold text-blue-600 mb-4">Map Information</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="bg-white rounded-lg shadow-lg border-2 sm:border-4 border-blue-600 p-4 sm:p-6">
+          <h3 className="text-base sm:text-lg font-bold text-blue-600 mb-3 sm:mb-4">Map Information</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             <div className="flex items-center space-x-3">
               <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
                 <div className="w-3 h-3 bg-white rounded-full"></div>

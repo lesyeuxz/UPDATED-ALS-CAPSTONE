@@ -71,8 +71,9 @@ export function ProgressTable({
   }
 
   return (
-    <div className="overflow-x-auto">
-      <Table>
+    <div className="overflow-x-auto rounded-md border border-gray-200 dark:border-gray-600">
+      <div className="min-w-full inline-block align-middle">
+        <Table className="min-w-[600px]">
         <TableHeader>
           <TableRow className="bg-blue-600 dark:bg-blue-700 hover:bg-blue-600 dark:hover:bg-blue-700">
             <TableHead className="text-white font-bold text-left">
@@ -132,6 +133,7 @@ export function ProgressTable({
           ))}
         </TableBody>
       </Table>
+      </div>
     </div>
   );
 }
