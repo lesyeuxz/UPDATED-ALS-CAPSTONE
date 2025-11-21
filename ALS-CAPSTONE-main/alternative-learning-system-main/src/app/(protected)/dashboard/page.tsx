@@ -7,8 +7,7 @@ import { useStudentStore } from '@/store/student-store';
 import { SchoolCalendar } from '@/components/dashboard/school-calendar';
 import { UpcomingEvents } from '@/components/dashboard/upcoming-events';
 import { VisionMission } from '@/components/dashboard/vision-mission';
-import { BarangayTabs } from '@/components/students/barangay-tabs';
-import { BarangayTabsSkeleton } from '@/components/students/barangay-tabs-skeleton';
+// Removed BarangayTabs UI per latest requirements
 import { MapSkeleton } from '@/components/map/map-skeleton';
 import { MapErrorBoundary } from '@/components/map/map-error-boundary';
 
@@ -34,7 +33,6 @@ export default function DashboardPage() {
     loadingBarangays,
     fetchStudents,
     fetchBarangays,
-    setSelectedBarangay,
   } = useStudentStore();
 
   // Local loading state for initial data fetch
@@ -105,9 +103,6 @@ export default function DashboardPage() {
   }, [students.data, barangays]);
 
   // Handle barangay tab selection with map navigation
-  const handleBarangaySelect = (barangayId: string) => {
-    setSelectedBarangay(barangayId);
-  };
 
   if (isLoading) {
     return (
@@ -147,22 +142,13 @@ export default function DashboardPage() {
         </div>
       </div>
 
-        {/* Map Section */}
+      {/* Map Section */}
       <div className="space-y-3 sm:space-y-4 mt-4 sm:mt-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Map View</h2>
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Map View
+          </h2>
         </div>
-
-        {/* Barangay Tabs */}
-        {loadingBarangays || isInitialLoading ? (
-          <BarangayTabsSkeleton />
-        ) : (
-          <BarangayTabs
-            barangays={filteredBarangays}
-            selectedBarangay={selectedBarangay}
-            onSelectBarangay={handleBarangaySelect}
-          />
-        )}
 
         {/* Interactive Map */}
         <div className="bg-white rounded-lg shadow-lg border-2 sm:border-4 border-blue-600">
